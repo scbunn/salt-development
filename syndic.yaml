@@ -1,0 +1,34 @@
+version: '2.1'
+
+services:
+
+    salt-master:
+        build: salt
+        container_name: salt-master
+        hostname: master
+        image: salt:development
+        command: master 
+        volumes:
+            - ./images/master:/etc/salt/master.d:ro
+            - ./config/formulas:/srv/salt/formulas:ro
+            - ./config/pillar:/srv/salt/pillar:ro
+            - ./config/runners:/srv/salt/runners:ro
+            - ./config/reactor:/srv/salt/reactor:ro
+
+    salt-syndic:
+        image: salt:development
+        container_name: salt-syndic
+        hostname: syndic
+        command: syndic
+        ports:
+            - "4505:4505"
+            - "4506:4506"
+        volumes:
+            - ./images/master:/etc/salt/master.d:ro
+            - ./config/formulas:/srv/salt/formulas:ro
+            - ./config/pillar:/srv/salt/pillar:ro
+            - ./config/runners:/srv/salt/runners:ro
+            - ./config/reactor:/srv/salt/reactor:ro
+            - ./images/syndic/syndic.conf:/etc/salt/master.d/syndic.conf:ro
+        depends_on:
+            - salt-master

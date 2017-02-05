@@ -1,0 +1,21 @@
+version: '2.1'
+
+services:
+
+    salt-master:
+        build: salt
+        container_name: salt-master
+        hostname: master
+        image: salt:development
+        command: master 
+        ports:
+            - "4505:4505"
+            - "4506:4506"
+        volumes:
+            - ./images/master:/etc/salt/master.d:ro
+            - ./config/formulas:/srv/salt/formulas:ro
+            - ./config/pillar:/srv/salt/pillar:ro
+            - ./config/runners:/srv/salt/runners:ro
+            - ./config/reactor:/srv/salt/reactor:ro
+
+
