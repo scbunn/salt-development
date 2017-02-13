@@ -7,7 +7,7 @@ services:
         container_name: salt-master
         hostname: master
         image: salt:development
-        command: master 
+        privileged: true 
         ports:
             - "4505:4505"
             - "4506:4506"
@@ -17,5 +17,6 @@ services:
             - ./config/pillar:/srv/salt/pillar:ro
             - ./config/runners:/srv/salt/runners:ro
             - ./config/reactor:/srv/salt/reactor:ro
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
 
